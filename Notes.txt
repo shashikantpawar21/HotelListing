@@ -1,0 +1,124 @@
+----------------------------------------------------------------------------------------------------------------
+NOTE 1. WHY AsNoTracking is used for read only scenarios ?
+
+IQueryable<T> IQueryable<T>.AsNoTracking<T>() where T : class
+The change tracker will not track any of the entities that are returned from a LINQ query. If the entity instances are modified, this will not be detected by the change tracker and DbContext.SaveChanges() will not persist those changes to the database.
+
+Disabling change tracking is useful for read-only scenarios because it avoids the overhead of setting up change tracking for each entity instance. You should not disable change tracking if you want to manipulate entity instances and persist those changes to the database using DbContext.SaveChanges().
+
+Identity resolution will not be performed. If an entity with a given key is in different result in the result set then they will be different instances.
+
+The default tracking behavior for queries can be controlled by Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.QueryTrackingBehavior.
+
+Returns:
+  A new query where the result set will not be tracked by the context.
+
+Exceptions:
+  ArgumentNullException
+
+----------------------------------------------------------------------------------------------------------------
+NOTE 2. Dispose method explanation ?
+
+public void Dispose()
+{
+    _context.Dispose();
+    GC.SuppressFinalize(this);
+}
+
+The Dispose method is part of the IDisposable pattern in C#. It is commonly used to release unmanaged resources held by an object. In the context of the UnitOfWork class you've provided, the primary unmanaged resource being handled is the DatabaseContext.
+
+_context.Dispose(): This line calls the Dispose method on the DatabaseContext instance (_context). The Dispose method of a DbContext typically releases unmanaged resources, such as the database connection, and performs cleanup operations. It's important to call Dispose to release resources explicitly when they are no longer needed, especially if the context implements IDisposable.
+
+GC.SuppressFinalize(this): This line informs the garbage collector (GC) that the finalizer, if any, for the current object should not be called. The finalizer is a method that gets executed during garbage collection and can be used for cleanup. However, in this case, since you've already explicitly called Dispose, you're indicating that there's no need for the finalizer to be executed. This can help optimize resource cleanup and reduce the load on the garbage collector.
+
+----------------------------------------------------------------------------------------------------------------
+NOTE 3. Diffrence between Dispose method and Destructor ?
+
+IDisposable and destructors (~ClassName) are both mechanisms in C# for cleaning up resources, but they serve different purposes and are used in different ways.
+
+IDisposable Interface:
+Purpose: IDisposable is an interface used for explicit resource management. It allows an object to release unmanaged resources, such as file handles, network connections, or database connections.
+
+Usage: You implement the IDisposable interface by providing a Dispose method. Consumers of your class should call Dispose explicitly when they are done using the object.
+
+Example:
+
+csharp
+Copy code
+public class MyClass : IDisposable
+{
+    private bool disposed = false;
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposed)
+        {
+            if (disposing)
+            {
+                // Release managed resources
+            }
+            // Release unmanaged resources
+            disposed = true;
+        }
+    }
+
+    ~MyClass()
+    {
+        Dispose(false);
+    }
+}
+Destructor (~ClassName):
+Purpose: Destructors are used for finalization, and they run as part of the garbage collection process. They are designed to clean up unmanaged resources if Dispose has not been called explicitly.
+
+Usage: Destructors are declared using the ~ClassName syntax. You cannot explicitly call a destructor; it is automatically called by the garbage collector.
+
+Example:
+
+csharp
+Copy code
+public class MyClass
+{
+    ~MyClass()
+    {
+        // Cleanup code for unmanaged resources
+    }
+}
+Key Differences:
+Control of Cleanup: With IDisposable, you have control over when the cleanup occurs by calling Dispose explicitly. Destructors are invoked by the garbage collector, and the exact timing of their execution is not guaranteed.
+
+Resource Types: IDisposable is typically used for explicit cleanup of both managed and unmanaged resources. Destructors are mainly used for cleanup of unmanaged resources.
+
+Pattern: It's common to implement both IDisposable and a destructor, following the Dispose pattern, to provide flexibility for consumers to manually release resources while still ensuring cleanup if they forget.
+
+Suppression of Finalization: In the Dispose method, you often use GC.SuppressFinalize(this) to inform the garbage collector that the finalizer (destructor) does not need to be executed because cleanup has already occurred.
+
+In summary, IDisposable is a more flexible and controllable mechanism for explicit resource cleanup, while destructors provide a safety net for scenarios where consumers might forget to call Dispose. It's common to use both in scenarios involving unmanaged resources.
+
+----------------------------------------------------------------------------------------------------------------
+NOTE 4 - Is this method, why DbContext  and Dbset are readonly even though changes are made on them in class ?
+
+In the provided YourRepository<T> class, the DbContext and DbSet<T> fields are marked as readonly. The readonly keyword indicates that the field's value can only be assigned during initialization or in the constructor and cannot be modified afterward. This is done to ensure that once these fields are set in the constructor, their values cannot be changed elsewhere in the class.
+
+Here's why this design choice might be made:
+
+Immutable Configuration: Marking fields as readonly communicates the intent that these fields should not be modified after the class is instantiated. It enforces immutability for these specific fields.
+
+Thread Safety: In a multi-threaded environment, marking fields as readonly can contribute to thread safety. Once the fields are set during construction, there is no risk of other methods concurrently modifying them.
+
+Constructor Initialization: By initializing these fields in the constructor, you ensure that the necessary dependencies are provided at the time of object creation.
+
+However, keep in mind that while the references to DbContext and DbSet<T> are marked as readonly, the actual content of the database can still be modified. The readonly keyword applies to the references themselves, not the underlying data.
+
+If your intention is to make the class truly immutable, preventing any changes to the internal state (including changes to the database), you might want to consider other approaches, such as exposing only read-only operations in the repository or using a different pattern altogether.
+
+In summary, marking fields as readonly in this context is about signaling immutability and ensuring that these dependencies are set during object construction, providing a level of clarity and safety in the design.
+
+----------------------------------------------------------------------------------------------------
+NOTE 5 - Why Save method is in UnitOfWork ?
+So all the changes on the context can be commited at once 
