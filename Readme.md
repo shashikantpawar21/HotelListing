@@ -6,14 +6,12 @@ The Hotel Listing API provides endpoints to retrieve information about countries
 Table of Contents
 -----------------
 
--   [Prerequisites](https://chat.openai.com/c/84a4fa10-4cb0-461b-a226-2b6698f30c18#prerequisites)
--   [Getting Started](https://chat.openai.com/c/84a4fa10-4cb0-461b-a226-2b6698f30c18#getting-started)
--   [API Endpoints](https://chat.openai.com/c/84a4fa10-4cb0-461b-a226-2b6698f30c18#api-endpoints)
-    -   [Country Controller](https://chat.openai.com/c/84a4fa10-4cb0-461b-a226-2b6698f30c18#country-controller)
-    -   [Hotel Controller](https://chat.openai.com/c/84a4fa10-4cb0-461b-a226-2b6698f30c18#hotel-controller)
--   [Logging](https://chat.openai.com/c/84a4fa10-4cb0-461b-a226-2b6698f30c18#logging)
--   [Contributing](https://chat.openai.com/c/84a4fa10-4cb0-461b-a226-2b6698f30c18#contributing)
--   [License](https://chat.openai.com/c/84a4fa10-4cb0-461b-a226-2b6698f30c18#license)
+-   [Prerequisites](#prerequisites)
+-   [Getting Started](#getting-started)
+-   [API Endpoints](#api-endpoints)
+    -   [Country Controller](#country-controller)
+    -   [Hotel Controller](#hotel-controller)
+-   [Logging](#logging)
 
 Prerequisites
 -------------
