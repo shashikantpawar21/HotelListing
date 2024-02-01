@@ -1,88 +1,109 @@
-# Hotel Listing API
+Hotel Listing API
+=================
 
 The Hotel Listing API provides endpoints to retrieve information about countries and hotels.
 
-## Table of Contents
+Table of Contents
+-----------------
 
-- [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
-- [API Endpoints](#api-endpoints)
-  - [Country Controller](#country-controller)
-  - [Hotel Controller](#hotel-controller)
-- [Logging](#logging)
-- [Contributing](#contributing)
-- [License](#license)
+-   [Prerequisites](https://chat.openai.com/c/84a4fa10-4cb0-461b-a226-2b6698f30c18#prerequisites)
+-   [Getting Started](https://chat.openai.com/c/84a4fa10-4cb0-461b-a226-2b6698f30c18#getting-started)
+-   [API Endpoints](https://chat.openai.com/c/84a4fa10-4cb0-461b-a226-2b6698f30c18#api-endpoints)
+    -   [Country Controller](https://chat.openai.com/c/84a4fa10-4cb0-461b-a226-2b6698f30c18#country-controller)
+    -   [Hotel Controller](https://chat.openai.com/c/84a4fa10-4cb0-461b-a226-2b6698f30c18#hotel-controller)
+-   [Logging](https://chat.openai.com/c/84a4fa10-4cb0-461b-a226-2b6698f30c18#logging)
+-   [Contributing](https://chat.openai.com/c/84a4fa10-4cb0-461b-a226-2b6698f30c18#contributing)
+-   [License](https://chat.openai.com/c/84a4fa10-4cb0-461b-a226-2b6698f30c18#license)
 
-## Prerequisites
+Prerequisites
+-------------
 
 Before you begin, ensure you have the following installed:
 
-- [.NET SDK](https://dotnet.microsoft.com/download) - To run the application.
-- [Visual Studio Code](https://code.visualstudio.com/) or [Visual Studio](https://visualstudio.microsoft.com/) - For development (optional).
+-   .NET SDK - To run the application.
+-   Visual Studio Code or [Visual Studio](https://visualstudio.microsoft.com/) - For development (optional).
 
-## Getting Started
+Getting Started
+---------------
 
-1. **Clone the repository:**
+1.  Clone the repository:
 
-   ```bash
-   git clone https://github.com/your-username/hotel-listing-api.git
+    bashCopy code
 
-Navigate to the project folder:
+    `git clone https://github.com/your-username/hotel-listing-api.git`
 
-bash
-Copy code
-cd hotel-listing-api
-Run the application:
+2.  Navigate to the project folder:
 
-bash
-Copy code
-dotnet run
-The API should be accessible at https://localhost:5001 or http://localhost:5000.
+    bashCopy code
+
+    `cd hotel-listing-api`
+
+3.  Run the application:
+
+    bashCopy code
+
+    `dotnet run`
+
+    The API should be accessible at `https://localhost:5001` or `http://localhost:5000`.
 
 API Endpoints
-Country Controller
-Get Countries
-Description: Retrieve a list of all countries.
+-------------
 
-Endpoint: GET /api/country
+### Country Controller
 
-Response:
+#### Get Countries
 
-200 OK: Returns a list of countries.
-500 Internal Server Error: If an error occurs during the process.
-Get Country
-Description: Retrieve detailed information about a specific country.
+-   Description: Retrieve a list of all countries.
 
-Endpoint: GET /api/country/{id}
+-   Endpoint: `GET /api/country`
 
-Parameters:
+-   Response:
 
-id (integer): The ID of the country.
-Response:
+    -   200 OK: Returns a list of countries.
+    -   500 Internal Server Error: If an error occurs during the process.
 
-200 OK: Returns detailed information about the specified country.
-500 Internal Server Error: If an error occurs during the process.
-Hotel Controller
-Get Hotels
-Description: Retrieve a list of all hotels.
+#### Get Country
 
-Endpoint: GET /api/hotel
+-   Description: Retrieve detailed information about a specific country.
 
-Response:
+-   Endpoint: `GET /api/country/{id}`
 
-200 OK: Returns a list of hotels.
-500 Internal Server Error: If an error occurs during the process.
-Get Hotel
-Description: Retrieve detailed information about a specific hotel.
+-   Parameters:
 
-Endpoint: GET /api/hotel/{id}
+    -   `id` (integer): The ID of the country.
+-   Response:
 
-Parameters:
+    -   200 OK: Returns detailed information about the specified country.
+    -   500 Internal Server Error: If an error occurs during the process.
 
-id (integer): The ID of the hotel.
-Response:
+### Hotel Controller
 
-200 OK: Returns detailed information about the specified hotel.
-500 Internal Server Error: If an error occurs during the process.
+#### Get Hotels
+
+-   Description: Retrieve a list of all hotels.
+
+-   Endpoint: `GET /api/hotel`
+
+-   Response:
+
+    -   200 OK: Returns a list of hotels.
+    -   500 Internal Server Error: If an error occurs during the process.
+
+#### Get Hotel
+
+-   Description: Retrieve detailed information about a specific hotel.
+
+-   Endpoint: `GET /api/hotel/{id}`
+
+-   Parameters:
+
+    -   `id` (integer): The ID of the hotel.
+-   Response:
+
+    -   200 OK: Returns detailed information about the specified hotel.
+    -   500 Internal Server Error: If an error occurs during the process.
+
 Logging
-The application utilizes Serilog for logging. Logs are stored in the "logs" folder, and specific logs related to hotel listings are stored in "hotellistingLogs" within the "logs" folder.
+-------
+
+The application utilizes [Serilog](https://serilog.net/) for logging. Logs are stored in the "logs" folder, and specific logs related to hotel listings are stored in "hotellistingLogs" within the "logs" folder.
