@@ -122,3 +122,25 @@ In summary, marking fields as readonly in this context is about signaling immuta
 ----------------------------------------------------------------------------------------------------
 NOTE 5 - Why Save method is in UnitOfWork ?
 So all the changes on the context can be commited at once 
+
+NOTE 6- Why UnitOfWork is transient scoped but AuthManager is scoped services
+
+The choice of lifetime for dependency injection registration (AddTransient, AddScoped, etc.) in ASP.NET Core depends on the specific requirements and behavior of the components being registered.
+
+Choosing the appropriate lifetime depends on the behavior and requirements of the components involved. If UnitOfWork doesn't need to maintain state between different parts of the application, and creating a new instance each time it's needed is acceptable, transient may be a good choice. On the other hand, AuthManager might need to maintain some state or resources within the scope of a single request, so using scoped lifetime is more suitable.
+
+NOTE 7 - Why Roles in UserDTO is collection<string> and not List<string> ?
+
+Using ICollection<string> for roles instead of List<string> is a design choice that provides flexibility and adheres to good coding practices.
+
+ICollection<string> is an interface representing a generic collection of objects, and List<string> is one of the classes that implement this interface. By using ICollection<string>, the code is more abstract and does not depend on specific implementation details of a list. This makes it easier to switch to a different collection type later if needed without affecting the code that uses the UserDTO class.
+
+Here are a few reasons why ICollection<string> might be preferred over List<string> in this context:
+
+Abstraction: ICollection<string> is more abstract and general, which aligns with the principle of coding to interfaces. It allows for greater flexibility if you decide to change the implementation in the future. For example, you might switch to a HashSet<string> or another collection type without modifying the code that relies on the UserDTO class.
+
+Interface-Based Programming: By using the ICollection<string> interface, the code is more adaptable to different collection types that implement the interface. This follows the concept of programming to an interface rather than a concrete implementation, promoting a more modular and extensible design.
+
+Readability and Intent: Using ICollection<string> may better express the intent of the Roles property without being tied to a specific implementation. It communicates that the property is a collection of items, but the exact implementation is not crucial to the class's functionality.
+
+That said, using List<string> would still work in many scenarios, and the choice between ICollection<string> and List<string> often depends on specific requirements and the preferences of the development team. If you don't foresee changing the collection type and want the additional functionality provided by List<T>, using it directly might be reasonable.

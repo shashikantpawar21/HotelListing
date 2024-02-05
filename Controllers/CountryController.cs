@@ -7,6 +7,7 @@ using AutoMapper;
 using HotelListing.IRepository;
 using HotelListing.Models;
 using HotelListing.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,6 +17,7 @@ namespace HotelListing.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class CountryController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -26,11 +28,12 @@ namespace HotelListing.Controllers
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
-            _mapper = mapper; 
+            _mapper = mapper;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetCountries()
         {
@@ -42,7 +45,7 @@ namespace HotelListing.Controllers
             }
             catch (System.Exception ex)
             {
-                
+
                 _logger.LogError(ex, $"Something went wrong in the {nameof(GetCountries)}");
                 return StatusCode(500, "Internal Server Error. Please try again later.");
             }
@@ -50,18 +53,19 @@ namespace HotelListing.Controllers
 
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetCountry(int id)
         {
             try
             {
-                var country = await _unitOfWork.CountryRepository.Get(q => q.Id == id, new List<string>{"Hotels"});
+                var country = await _unitOfWork.CountryRepository.Get(q => q.Id == id, new List<string> { "Hotels" });
                 var result = _mapper.Map<CountryDTO>(country);
                 return Ok(result);
             }
             catch (System.Exception ex)
             {
-                
+
                 _logger.LogError(ex, $"Somethingf went wrong in the {nameof(GetCountry)}");
                 return StatusCode(500, "Internal Server Error. Please try again later.");
             }

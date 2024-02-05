@@ -9,6 +9,7 @@ using HotelListing.Data;
 using HotelListing.IRepository;
 using HotelListing.Models;
 using HotelListing.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -18,6 +19,7 @@ namespace HotelListing.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class HotelController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -33,6 +35,7 @@ namespace HotelListing.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetHotels()
         {
@@ -52,12 +55,13 @@ namespace HotelListing.Controllers
 
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetHotel(int id)
         {
             try
             {
-                var hotel = await _unitOfWork.HotelRepository.Get(q => q.Id == id, new List<string> {"Country"});
+                var hotel = await _unitOfWork.HotelRepository.Get(q => q.Id == id, new List<string> { "Country" });
                 var result = _mapper.Map<HotelDTO>(hotel);
                 return Ok(result);
             }
