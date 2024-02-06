@@ -2,7 +2,17 @@ Hotel Listing API
 
 =================
 
-The Hotel Listing API provides endpoints to retrieve information about countries and hotels.
+- Build a fully data driven REST Web API using cutting edge technology
+- Create a database using Entity Framework Core
+- Unit Of Work and Generic Repository Pattern
+- Dependency Injection
+- Setup Logging using SeriLog
+- Setup API documentation using SwaggerUI
+- Understand the REST design principles
+- Understand C# 9 and .Net Core Web Syntax
+- Understand user Authentication using JWT (JSON Web Tokens)
+- Understand how to use Data Transfer Objects (DTOs) and AutoMapper
+- Manage Packages with NuGet Manager
 
 Table of Contents
 
