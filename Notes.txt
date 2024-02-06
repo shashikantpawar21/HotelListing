@@ -144,3 +144,19 @@ Interface-Based Programming: By using the ICollection<string> interface, the cod
 Readability and Intent: Using ICollection<string> may better express the intent of the Roles property without being tied to a specific implementation. It communicates that the property is a collection of items, but the exact implementation is not crucial to the class's functionality.
 
 That said, using List<string> would still work in many scenarios, and the choice between ICollection<string> and List<string> often depends on specific requirements and the preferences of the development team. If you don't foresee changing the collection type and want the additional functionality provided by List<T>, using it directly might be reasonable.
+
+
+NOTE 8  Delete on country delete the connected hotel data too ?
+
+table.PrimaryKey("PK_Hotels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Hotels_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);  
+In the initial Migration data hotel has foreign key with Cascade effect which means 
+if country id is delete all the related hotel records will be deleted too 
+
+This can be changed to NoAction or Restricted to avoid data loss 
+
