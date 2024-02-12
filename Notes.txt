@@ -158,5 +158,5 @@ table.PrimaryKey("PK_Hotels", x => x.Id);
 In the initial Migration data hotel has foreign key with Cascade effect which means 
 if country id is delete all the related hotel records will be deleted too 
 
-This can be changed to NoAction or Restricted to avoid data loss 
+This can be changed to NoAction or Restricted to avoid data loss. 
 
